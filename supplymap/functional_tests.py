@@ -19,10 +19,7 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('Supply Map', self.browser.title)
         self.fail('Finish the tests!')
 
-        # She signs up as a member of the site, and logs in with
-        # the credentials she chose.
-
-        # She adds a product to her list of products.
+        # She adds a product to the list of products.
 
         # She adds a second product to her list of products.
 
