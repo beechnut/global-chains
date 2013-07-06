@@ -14,6 +14,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', 'products.views.index_page', name='index'),
     # url(r'^get_supply_chains/$', SupplyChainJson.as_view(), name="get_supply_chains"),
-    # url(r'^$', )
 )

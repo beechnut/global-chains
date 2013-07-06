@@ -1,7 +1,8 @@
-# Create your views here.
+from django.shortcuts import render
 
 # Add a view to link to the map here
-home_page = None
+def index_page(request):
+  return render(request, 'index.html')
 
 # Add a views to serve up GeoJSON for a given product
 

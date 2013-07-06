@@ -103,19 +103,12 @@ Now you can run commands like `mpy runserver`.
 Developer Flow
 --------------
 
-make fixtures
-
-make Django view which serves json for all supply chains
-
-(then clicking on product shows only that product's supply chain)
-make Django view which serves json for one supply chain
-
-adjust model: locations should not have supply chains
-              blank values should allow null
-
-clean up data inspector: better output
-
-geocode
++ make Django view which serves json for all supply chains
++ (then clicking on product shows only that product's supply chain)
++ make Django view which serves json for one supply chain
++ adjust model: blank values should allow null
++ clean up data inspector: better output
++ before_save :geocode (django equivalent)
 
 Developer Information
 ---------------------
