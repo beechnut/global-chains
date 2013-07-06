@@ -32,7 +32,6 @@ class Waypoint(models.Model):
     facility_address = models.CharField(max_length=200)
     company_name     = models.CharField(max_length=200, blank=True)
     worker_wage      = models.DecimalField(max_digits=5, decimal_places=2, blank=True)
-    supply_chain     = models.ForeignKey(SupplyChain)
 
     def __unicode__(self):
         return self.company_name + " " + self.location
