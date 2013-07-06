@@ -12,11 +12,22 @@ L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png',
   styleId: 22677
 }).addTo(map);
 
-var waypoints_zero = data.supply_chains[0].waypoints
-var transports_zero = data.supply_chains[0].transports
+var waypoints_array = []
+var transports_array = []
 
-var waypoints_one = data.supply_chains[1].waypoints
-var transports_one = data.supply_chains[1].transports
+data.supply_chains.forEach(function(supply_chain, ind, arr){
+  console.log(supply_chain);
+  waypoints_array.push(supply_chain.waypoints);
+  transports_array.push(supply_chain.transports);
+});
+
+console.log(waypoints_array);
+
+// var waypoints_zero = data.supply_chains[0].waypoints
+// var transports_zero = data.supply_chains[0].transports
+
+// var waypoints_one = data.supply_chains[1].waypoints
+// var transports_one = data.supply_chains[1].transports
 
 
 // Style Setup
@@ -84,7 +95,7 @@ function styleLines(feature) {
 
 
 
-// Waypoints
+// Waypoints Functions
 
 function pointToWaypointLayer(feature, latlng) {
   var marker = L.AwesomeMarkers.icon({
@@ -102,21 +113,7 @@ function onEachWaypoint(feature, layer) {
   }
 }
 
-L.geoJson(waypoints_zero, {
-  style: styleMarkers,
-  pointToLayer: pointToWaypointLayer,
-  onEachFeature: onEachWaypoint
-}).addTo(map);
-
-L.geoJson(waypoints_one, {
-  style: styleMarkers,
-  pointToLayer: pointToWaypointLayer,
-  onEachFeature: onEachWaypoint
-}).addTo(map);
-
-
-
-// Transports
+// Transports Functions
 
 function onEachTransport(feature, layer) {
   // does this feature have a property named popupContent?
@@ -126,12 +123,25 @@ function onEachTransport(feature, layer) {
   }
 }
 
-L.geoJson(transports_zero, {
-  style: styleLines,
-  onEachFeature: onEachTransport
-}).addTo(map);
 
-L.geoJson(transports_one, {
-  style: styleLines,
-  onEachFeature: onEachTransport
-}).addTo(map);
+
+// Waypoint Creation
+
+waypoints_array.forEach(function(waypoints){
+  L.geoJson(waypoints, {
+    style: styleMarkers,
+    pointToLayer: pointToWaypointLayer,
+    onEachFeature: onEachWaypoint
+  }).addTo(map);
+});
+
+
+// Line Creation
+
+transports_array.forEach(function(transports){
+  L.geoJson(transports, {
+    style: styleLines,
+    onEachFeature: onEachTransport
+  }).addTo(map);
+});
+
