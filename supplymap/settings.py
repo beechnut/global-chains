@@ -148,3 +148,7 @@ LOGGING = {
         },
     }
 }
+
+FIXTURE_DIRS = (
+   '/products/fixtures/',
+)

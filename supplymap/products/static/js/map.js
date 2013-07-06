@@ -56,22 +56,24 @@ var facility_icons = {
 // Style Functions
 
 function getCarbonColor(carbon) {
-  var c = carbon;
-  return c > 1000 ? 'red' :
-         c > 500  ? 'darkred' :
-         c > 100  ? 'purple' :
-         c > 20   ? 'blue' :
-                    'darkblue' ;
+  return '#888';
+  // var c = carbon;
+  // return c > 1000 ? 'red' :
+  //        c > 500  ? 'darkred' :
+  //        c > 100  ? 'purple' :
+  //        c > 20   ? 'blue' :
+  //                   'darkblue' ;
 }
 
 function getWageColor(wage) {
-  var w = wage;
-  return w >  200 ? 'darkblue' :
-         w >  50  ? 'blue' :
-         w >  10  ? 'purple' :
-         w >  2   ? 'red' :
-         w >= 1   ? 'dark_red' :
-                    '#DDD';
+  return 'blue';
+  // var w = wage;
+  // return w >  200 ? 'darkblue' :
+  //        w >  50  ? 'blue' :
+  //        w >  10  ? 'purple' :
+  //        w >  2   ? 'red' :
+  //        w >= 1   ? 'dark_red' :
+  //                   '#DDD';
 }
 
 function styleMarkers(feature){
@@ -111,6 +113,10 @@ function onEachWaypoint(feature, layer) {
     var wage_info = "$" + feature.properties.worker_wage + "/day"
     layer.bindPopup(wage_info);
   }
+  layer.on({
+    mouseover: highlightFeature,
+    mouseout: resetHighlight
+  });
 }
 
 // Transports Functions
@@ -121,6 +127,10 @@ function onEachTransport(feature, layer) {
     var carbon_info = "Emits " + feature.properties.carbon_output + " tons CO2"
     layer.bindPopup(carbon_info);
   }
+  layer.on({
+    mouseover: highlightFeature,
+    mouseout: resetHighlight
+  });
 }
 
 
@@ -145,3 +155,45 @@ transports_array.forEach(function(transports){
   }).addTo(map);
 });
 
+
+// Data Inspect Preparation
+
+function highlightFeature(e) {
+  var layer = e.target;
+
+  // layer.setStyle({
+  //   weight: 5,
+  //   color: '#666',
+  //   dashArray: '',
+  //   fillOpacity: 0.7
+  // });
+
+  // if(!L.Browser.ie && !L.Browser.opera){
+  //   layer.bringToFront();
+  // }
+  info.update(layer.feature.properties); // to update control / data inspector
+}
+
+function resetHighlight(e) {
+  // geojson.resetStyle(e.target);
+  info.update();
+}
+
+
+// Data Inspector
+
+var info = L.control();
+
+info.onAdd = function(map){
+  this._div = L.DomUtil.create('div', 'info'); // create a div with class "info"
+  this.update();
+  return this._div;
+};
+
+var HEADER_HTML = '<h4>Data Inspector</h4>'
+
+info.update = function(props) {
+  this._div.innerHTML = HEADER_HTML + (props ? '<b>Emits ' + props.carbon_output + ' tons CO2</b><br /> $' + props.worker_wage + ' / day' : 'Hover over a waypoint<br/>or transport route.');
+}
+
+info.addTo(map);
