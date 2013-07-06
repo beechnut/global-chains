@@ -103,6 +103,8 @@ Now you can run commands like `mpy runserver`.
 Developer Flow
 --------------
 
+create data inspector
+
 make map view with leaflet that shows all supply chains
 then clicking on products shows only that supply chain
 
@@ -111,6 +113,14 @@ adjust model: locations should not have supply chains
 
 geocode
 make fixtures
+
+Jakarta [106.903625,-6.105053]
+Beijing [116.427183,39.880235]
+Brooklyn [-73.959961,40.557635]
+Hell's Kitchen [-73.991761,40.762861]
+Jamaica Plain [-71.118729,42.304737]
+Cambridge [-71.101033,42.373542]
+
 
 Developer Information
 ---------------------
@@ -179,3 +189,6 @@ map.fitBounds([
 var greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'}),
     redIcon = new LeafIcon({iconUrl: 'leaf-red.png'}),
     orangeIcon = new LeafIcon({iconUrl: 'leaf-orange.png'});
+
+latlngs = [origin, destination]
+var polyline = L.polyline(latlngs, {color: getCarbonColor(transport.carbon_output)}).addTo(map);
