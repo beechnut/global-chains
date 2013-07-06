@@ -100,12 +100,17 @@ Save and exit.
 
 Now you can run commands like `mpy runserver`.
 
-Developer Workflow
-------------------
+Developer Flow
+--------------
 
-start the app
-start a functional test
-write tests for models
+make map view with leaflet that shows all supply chains
+then clicking on products shows only that supply chain
+
+adjust model: locations should not have supply chains
+              blank values should allow null
+
+geocode
+make fixtures
 
 Developer Information
 ---------------------
