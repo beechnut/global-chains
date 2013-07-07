@@ -15,13 +15,29 @@ L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png',
 var waypoints_array = []
 var transports_array = []
 
-data.supply_chains.forEach(function(supply_chain, ind, arr){
-  console.log(supply_chain);
-  waypoints_array.push(supply_chain.waypoints);
-  transports_array.push(supply_chain.transports);
+$('.item').on('click', function(){
+  var id = $(this).data('chain')
+  $('.item').css('background-color', '#09F')
+  $(this).css('background-color', '#3AF')
+  console.log(id);
+  // map.clearLayers();
+
+  $.getJSON('get_supply_chain/' + id, function(data){
+    data.supply_chains.forEach(function(supply_chain, ind, arr){
+      console.log(supply_chain);
+
+      waypoints_array.push(supply_chain.waypoints);
+      transports_array.push(supply_chain.transports);
+      
+      console.log(waypoints_array);
+      console.log(transports_array);
+      
+      create_waypoints(waypoints_array);
+      create_transports(transports_array);
+    });
+  });
 });
 
-console.log(waypoints_array);
 
 // var waypoints_zero = data.supply_chains[0].waypoints
 // var transports_zero = data.supply_chains[0].transports
@@ -43,14 +59,22 @@ var dota_colors = {
 }
 
 var facility_icons = {
-  'Raw Material Supplier': 'leaf',
-  'Manufacturer': 'cog', // gears
-  'Storage Facility': 'building', 
-  'Distributor': 'globe',
-  'Retailer': 'signout', //credit-card, money
-  'Consumer': 'home'
+  'rmsp': 'leaf',                         // Raw Material Supplier
+  'manu': 'cog', // gears                 // Manufacturer
+  'stor': 'building',                     // Storage Facility
+  'dist': 'globe',                        // Distributor
+  'retl': 'signout', //credit-card, money // Retailer
+  'cons': 'home'                          // Consumer
 }
 
+var facility_names = {
+  'rmsp': 'Raw Material Supplier',
+  'manu': 'Manufacturer',
+  'stor': 'Storage Facility',
+  'dist': 'Distributor',
+  'retl': 'Retailer',
+  'cons': 'Consumer'
+}
 
 
 // Style Functions
@@ -109,9 +133,9 @@ function pointToWaypointLayer(feature, latlng) {
 
 function onEachWaypoint(feature, layer) {
   // does this feature have a property named popupContent?
-  if (feature.properties && feature.properties.worker_wage) {
-    var wage_info = "$" + feature.properties.worker_wage + "/day"
-    layer.bindPopup(wage_info);
+  if (feature.properties && feature.properties.waypoint_type) {
+    var facility_code = feature.properties.waypoint_type
+    layer.bindPopup(facility_names[facility_code]);
   }
   layer.on({
     mouseover: highlightFeature,
@@ -136,24 +160,27 @@ function onEachTransport(feature, layer) {
 
 
 // Waypoint Creation
-
-waypoints_array.forEach(function(waypoints){
-  L.geoJson(waypoints, {
-    style: styleMarkers,
-    pointToLayer: pointToWaypointLayer,
-    onEachFeature: onEachWaypoint
-  }).addTo(map);
-});
+function create_waypoints(waypoints_array){
+  waypoints_array.forEach(function(waypoints){
+    L.geoJson(waypoints, {
+      style: styleMarkers,
+      pointToLayer: pointToWaypointLayer,
+      onEachFeature: onEachWaypoint
+    }).addTo(map);
+  });
+}
 
 
 // Line Creation
 
-transports_array.forEach(function(transports){
-  L.geoJson(transports, {
-    style: styleLines,
-    onEachFeature: onEachTransport
-  }).addTo(map);
-});
+function create_transports(transports_array){
+  transports_array.forEach(function(transports){
+    L.geoJson(transports, {
+      style: styleLines,
+      onEachFeature: onEachTransport
+    }).addTo(map);
+  });  
+}
 
 
 // Data Inspect Preparation
