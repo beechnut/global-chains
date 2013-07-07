@@ -12,56 +12,46 @@ L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png',
   styleId: 22677
 }).addTo(map);
 
-var waypoints_array = []
-var transports_array = []
+
+var waypoint_layer, transport_layer;
 
 $('.item').on('click', function(){
   var id = $(this).data('chain')
   $('.item').css('background-color', '#09F')
   $(this).css('background-color', '#3AF')
   console.log(id);
-  
+
   $.getJSON('get_supply_chain/' + id, function(data){
     data.supply_chains.forEach(function(supply_chain, ind, arr){
       console.log(supply_chain);
 
-      waypoints_array.push(supply_chain.waypoints);
-      transports_array.push(supply_chain.transports);
+      if (map.hasLayer(waypoint_layer)){
+        map.removeLayer(waypoint_layer);
+      }
+
+      if (map.hasLayer(transport_layer)){
+        map.removeLayer(transport_layer);
+      }
       
-      console.log(waypoints_array);
-      console.log(transports_array);
-      
-      create_waypoints(waypoints_array);
-      create_transports(transports_array);
+      console.log(supply_chain.waypoints);
+      console.log(supply_chain.transports);
+
+      waypoint_layer = L.geoJson(supply_chain.waypoints, {
+        style: styleMarkers,
+        pointToLayer: pointToWaypointLayer,
+        onEachFeature: onEachWaypoint
+      });
+
+      transport_layer = L.geoJson(supply_chain.transports, {
+        style: styleLines,
+        onEachFeature: onEachTransport
+      });
+
+      map.addLayer(waypoint_layer);
+      map.addLayer(transport_layer);
     });
   });
 });
-
-
-
-// Waypoint Creation
-function create_waypoints(waypoints_array){
-  waypoints_array.forEach(function(waypoints){
-    var waypoint_layer = L.geoJson(waypoints, {
-      style: styleMarkers,
-      pointToLayer: pointToWaypointLayer,
-      onEachFeature: onEachWaypoint
-    }).addTo(map);
-  });
-}
-
-
-// Line Creation
-
-function create_transports(transports_array){
-  transports_array.forEach(function(transports){
-    var transport_layer = L.geoJson(transports, {
-      style: styleLines,
-      onEachFeature: onEachTransport
-    }).addTo(map);
-  });  
-}
-
 
 
 
