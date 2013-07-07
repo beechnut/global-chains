@@ -103,12 +103,13 @@ Now you can run commands like `mpy runserver`.
 Developer Flow
 --------------
 
-+ make Django view which serves json for all supply chains
-+ (then clicking on product shows only that product's supply chain)
-+ make Django view which serves json for one supply chain
-+ adjust model: blank values should allow null
-+ clean up data inspector: better output
-+ before_save :geocode (django equivalent)
+1. serialize objects for json views
+  + requires that models be correct
+
+2. write geocode method for Waypoint#before_save
+  + http://stackoverflow.com/questions/2755027/geocoding-an-address-on-form-submission
+
+3. clean up data inspector: better output
 
 Developer Information
 ---------------------

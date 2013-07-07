@@ -18,6 +18,13 @@ class SupplyChain(models.Model):
     def __unicode__(self):
         return "Supply chain for " + self.product.name
 
+    def waypoint_set(self):
+        waypoints = set()       # keeps unique during add
+        transports = self.transport_set.all()
+        for transport in transports:
+            waypoints.add(transport.origin)
+        waypoints.add(transports[::-1][0].destination) # gets last destination: reverses & gets first item in reversed
+        return list(waypoints)  # makes it more accessible as a list
 
 
 WAYPOINT_TYPES =   (('rmsp', 'Raw Material Supplier'),
