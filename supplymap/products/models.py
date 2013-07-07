@@ -1,5 +1,6 @@
 from django.db import models
 from djangotoolbox.fields import ListField, EmbeddedModelField
+from jsonresponse import to_json
 
 class Product(models.Model):
     name          = models.CharField(max_length=100)
@@ -17,6 +18,9 @@ class SupplyChain(models.Model):
 
     def __unicode__(self):
         return "Supply chain for " + self.product.name
+
+    def serialize(self):
+        return dict(name=self.product.name)
 
 
 WAYPOINT_TYPES =   (('rmsp', 'Raw Material Supplier'),

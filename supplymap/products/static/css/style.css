@@ -1,12 +1,46 @@
 /* style.css */
 
+body {
+  font-family: sans-serif;
+  font-size: 13px/15px;
+  word-spacing: 0.1em;
+  letter-spacing: 0.08em;
+}
+
 #map {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+  margin-left: 25%;
   background-color: #EEE;
+}
+
+#sidebar {
+  background-color: #09F;
+  color: #FFF;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 25%;
+  z-index: 9000;
+}
+
+#sidebar .header{
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+#sidebar .item{
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  border-bottom: 1px #9AF solid;
 }
 
 .info {

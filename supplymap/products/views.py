@@ -1,8 +1,23 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from django.core import serializers
+from products.models import *
+
 
 # Add a view to link to the map here
 def index_page(request):
   return render(request, 'index.html')
+
+def get_supply_chains(request):
+  chains = SupplyChain.objects.all()
+  response = serializers.serialize('json', chains)
+  return HttpResponse(response, mimetype='application/json')
+
+def get_supply_chain(request):
+  chain = SupplyChain.objects.get(pk=2)
+  array_result = serializers.serialize('json', [chain], ensure_ascii=False)
+  just_object_result = array_result[1:-1]
+  return HttpResponse(just_object_result, mimetype='application/json')
 
 # Add a views to serve up GeoJSON for a given product
 
