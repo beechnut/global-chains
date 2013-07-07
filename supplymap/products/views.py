@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core import serializers
 from products.models import *
+from products.utils import *
 import json
 
 
@@ -15,33 +16,21 @@ def get_supply_chains(request):
   return HttpResponse(response, mimetype='application/json')
 
 def get_supply_chain(request, pk):
-  waypoints = SupplyChain.objects.get(pk=pk).waypoint_set()
-  
-  features = []
-  for waypoint in waypoints:
-    features.append({
-      'type': 'Feature',
-      'geometry': {
-        'type': 'Point',
-        'coordinates': waypoint.location
-      },
-      'properties': {
-        'waypoint_type': waypoint.waypoint_type,
-        'facility_address': waypoint.facility_address,
-        'company_name': waypoint.company_name,
-        'worker_wage': waypoint.waypoint_type,
-      }
-    })
+  chain      = SupplyChain.objects.get(pk=pk)
+  product    = chain.product
+  waypoints  = chain.waypoint_set()
+  transports = Transport.objects.filter(supply_chain__pk=pk)
 
 
-  waypoints_object = {
-    'waypoints': {
-      'type': 'FeatureCollection',
-      'features': features
-    }
-  }
+  product_object    = make_product_json(product)
+  waypoints_object  = make_waypoint_geojson(waypoints)
+  transports_object = make_transport_geojson(transports)
 
-  response = json.dumps(waypoints_object)
+  product_object.update(waypoints_object)
+  product_object.update(transports_object)
+
+  supply_chain_object = {'supply_chains':[product_object]}
+  response = json.dumps(supply_chain_object)
   
   return HttpResponse(response, 'application/json')
 
