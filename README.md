@@ -103,7 +103,7 @@ Now you can run commands like `mpy runserver`.
 Developer Flow
 --------------
 
-1. serialize objects for json views
+1. serialize GeoJSON for json views
 
 2. write geocode method for Waypoint#before_save
   + http://stackoverflow.com/questions/2755027/geocoding-an-address-on-form-submission

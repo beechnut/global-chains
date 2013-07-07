@@ -15,17 +15,33 @@ def get_supply_chains(request):
   return HttpResponse(response, mimetype='application/json')
 
 def get_supply_chain(request, pk):
-  product = SupplyChain.objects.get(pk=pk).product
-  json_product = serializers.serialize('json', [product])
-  json_product = json_product[1:-1]
-
-  transportQuerySet = Transport.objects.filter(supply_chain__pk=pk)
-  json_transports = serializers.serialize('json', transportQuerySet)
+  waypoints = SupplyChain.objects.get(pk=pk).waypoint_set()
   
-  waypointSet = SupplyChain.objects.get(pk=pk).waypoint_set()
-  json_waypoints = serializers.serialize('json', waypointSet)
+  features = []
+  for waypoint in waypoints:
+    features.append({
+      'type': 'Feature',
+      'geometry': {
+        'type': 'Point',
+        'coordinates': waypoint.location
+      },
+      'properties': {
+        'waypoint_type': waypoint.waypoint_type,
+        'facility_address': waypoint.facility_address,
+        'company_name': waypoint.company_name,
+        'worker_wage': waypoint.waypoint_type,
+      }
+    })
 
-  response = '{"product":%s, "waypoints":%s, "transports":%s}' % (json_product, json_waypoints, json_transports)
+
+  waypoints_object = {
+    'waypoints': {
+      'type': 'FeatureCollection',
+      'features': features
+    }
+  }
+
+  response = json.dumps(waypoints_object)
   
   return HttpResponse(response, 'application/json')
 
