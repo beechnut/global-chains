@@ -15,9 +15,9 @@ L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png',
 
 var waypoint_layer, transport_layer;
 
-$('.item').on('click', function(){
+$('.product').on('click', function(){
   var id = $(this).data('chain')
-  $('.item').css('background-color', '#09F')
+  $('.product').css('background-color', '#09F')
   $(this).css('background-color', '#3AF')
   console.log(id);
 

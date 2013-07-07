@@ -13,9 +13,9 @@
   <body>
     <div id="sidebar">
       <div class="header">Supply Chain Map</div>
-      <div class="item" data-chain="2">Ceramic Cup</div>
-      <div class="item" data-chain="3">Ceramic Plate</div>
-      <div class="item" data-chain="4">Fruit Salad</div>
+      {% for id, name in products.items %}
+        <div class="product" data-chain="{{ id  }}">{{name}}</div>
+      {% endfor %}
     </div>
     <div id="map"></div>
   </body>

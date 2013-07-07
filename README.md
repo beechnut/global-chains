@@ -1,7 +1,7 @@
-Chain Map
+Global Chains
 ==========
 
-__Supply Map__ shows you the geography of the supply chain of everyday products you use.
+__Global Chains__ shows you the geography of the supply chain of everyday products you use. Explore socioeconomic inequalities across the supply chain, and visualize the carbon emissions of each step in the production process.
 
 ### End Users
 

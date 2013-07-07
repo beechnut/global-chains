@@ -8,7 +8,11 @@ import json
 
 # Add a view to link to the map here
 def index_page(request):
-  return render(request, 'index.html')
+  products = {}
+  for supply_chain in SupplyChain.objects.all():
+    products[str(supply_chain.pk)]=supply_chain.product.name
+  print products.items
+  return render(request, 'index.html', { 'products': products })
 
 def get_supply_chains(request):
   chains = SupplyChain.objects.all()
