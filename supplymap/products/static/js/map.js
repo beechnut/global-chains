@@ -20,8 +20,7 @@ $('.item').on('click', function(){
   $('.item').css('background-color', '#09F')
   $(this).css('background-color', '#3AF')
   console.log(id);
-  // map.clearLayers();
-
+  
   $.getJSON('get_supply_chain/' + id, function(data){
     data.supply_chains.forEach(function(supply_chain, ind, arr){
       console.log(supply_chain);
@@ -39,11 +38,31 @@ $('.item').on('click', function(){
 });
 
 
-// var waypoints_zero = data.supply_chains[0].waypoints
-// var transports_zero = data.supply_chains[0].transports
 
-// var waypoints_one = data.supply_chains[1].waypoints
-// var transports_one = data.supply_chains[1].transports
+// Waypoint Creation
+function create_waypoints(waypoints_array){
+  waypoints_array.forEach(function(waypoints){
+    var waypoint_layer = L.geoJson(waypoints, {
+      style: styleMarkers,
+      pointToLayer: pointToWaypointLayer,
+      onEachFeature: onEachWaypoint
+    }).addTo(map);
+  });
+}
+
+
+// Line Creation
+
+function create_transports(transports_array){
+  transports_array.forEach(function(transports){
+    var transport_layer = L.geoJson(transports, {
+      style: styleLines,
+      onEachFeature: onEachTransport
+    }).addTo(map);
+  });  
+}
+
+
 
 
 // Style Setup
@@ -155,31 +174,6 @@ function onEachTransport(feature, layer) {
     mouseover: highlightFeature,
     mouseout: resetHighlight
   });
-}
-
-
-
-// Waypoint Creation
-function create_waypoints(waypoints_array){
-  waypoints_array.forEach(function(waypoints){
-    L.geoJson(waypoints, {
-      style: styleMarkers,
-      pointToLayer: pointToWaypointLayer,
-      onEachFeature: onEachWaypoint
-    }).addTo(map);
-  });
-}
-
-
-// Line Creation
-
-function create_transports(transports_array){
-  transports_array.forEach(function(transports){
-    L.geoJson(transports, {
-      style: styleLines,
-      onEachFeature: onEachTransport
-    }).addTo(map);
-  });  
 }
 
 
