@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     url(r'^get_supply_chains$', 'products.views.get_supply_chains', name='get_supply_chains'),
 
     # /get_supply chains will return JSON for all supply chains
+    url(r'^get_supply_chain/(\d{1,4})$', 'products.views.get_supply_chain', name='get_supply_chain'),
 )
