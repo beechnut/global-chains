@@ -16,7 +16,10 @@ def get_supply_chains(request):
 
 def get_supply_chain(request, id):
   chain = SupplyChain.objects.get(pk=id)
-  array_result = serializers.serialize('json', [chain], ensure_ascii=False)
+  # waypoints  = chain.waypoint_set.all()
+  # waypoints are assigned through transports, should have a custom method for thiss
+  transports = chain.transport_set.all()
+  array_result = serializers.serialize('json', [waypoints], ensure_ascii=False)
   just_object_result = array_result[1:-1]
   return HttpResponse(just_object_result, mimetype='application/json')
 
