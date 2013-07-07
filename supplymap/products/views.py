@@ -11,40 +11,25 @@ def index_page(request):
 
 def get_supply_chains(request):
   chains = SupplyChain.objects.all()
-  response = serializers.serialize('json', chains)
+  response = serializers.serializers('json', chains)
   return HttpResponse(response, mimetype='application/json')
 
-def get_supply_chain(request, id):
-  chain = SupplyChain.objects.get(pk=id)
-  # waypoints  = chain.waypoint_set.all()
-  # waypoints are assigned through transports, should have a custom method for thiss
-  transports = chain.transport_set.all()
-  array_result = serializers.serialize('json', [waypoints], ensure_ascii=False)
-  just_object_result = array_result[1:-1]
-  return HttpResponse(just_object_result, mimetype='application/json')
+def get_supply_chain(request, pk):
+  product = SupplyChain.objects.get(pk=pk).product
+  json_product = serializers.serialize('json', [product])
+  json_product = json_product[1:-1]
 
-# Add a views to serve up GeoJSON for a given product
+  transportQuerySet = Transport.objects.filter(supply_chain__pk=pk)
+  json_transports = serializers.serialize('json', transportQuerySet)
+  
+  waypointSet = SupplyChain.objects.get(pk=pk).waypoint_set()
+  json_waypoints = serializers.serialize('json', waypointSet)
 
-# class BlogJSON(JSONListView):
+  response = '{"product":%s, "waypoints":%s, "transports":%s}' % (json_product, json_waypoints, json_transports)
+  
+  return HttpResponse(response, 'application/json')
 
-#   def get_context_data(self, **kwargs):
-#         context = super(BlogJSON, self).get_context_data(**kwargs)
-#         context['countries'] = make_geojson([entry.author.pcvprofile.country for entry in self.object_list])
-#         return context
-        
-# def make_geojson(codes):
-#     features = []
-#     for code in set(codes):
-#         features.append({
-#             'type': "Feature",
-#             'geometry': {
-#                 'type': "Point",
-#                 'coordinates': data_options.COUNTRIES[code]['coords']
-#             },
-#             'properties': { 'title': code }
-#         })
-
-#     return {
-#         'type': "FeatureCollection",
-#         'features': features
-#     }
+  # transports = (Transport.objects.all().values('method', 'worker_wage'))
+  # json_transports = serializers.serialize('json', [transports], ensure_ascii=False)
+  # just_object_result = array_result[1:-1]
+  # return HttpResponse(json_transports, mimetype='application/json')
