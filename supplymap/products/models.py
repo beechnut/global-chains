@@ -38,8 +38,9 @@ class Waypoint(models.Model):
     def __unicode__(self):
         return self.company_name + " " + self.location
 
-    # TODO: Write queryset to get distinct origins, and the last transport's destination
-    # Transport.objects.distinct(['origin']) + Transport.objects.reverse()[:1]
+    def save(self, *args, **kwargs):
+        # geocode()
+        super(Waypoint, self).save(*args, **kwargs) # Call the "real" save() method.
   
 
 TRANSPORT_METHODS = (('s', 'ship'), ('p', 'plane'), ('x', 'train'), ('a', 'automobile'))
