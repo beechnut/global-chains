@@ -5,7 +5,7 @@ __Global Chains__ enables you to explore the supply chains of everyday products 
 
 ### End Users
 
-Users click on a product in a set to see that product's global traverse, from raw material to finished product.
+Users click on a product in a set to see that product's global traversal, from raw material to finished product.
 
 With the supply chain displayed, users can click on the various waypoints to explore information about that waypoint. They could inspect a manufacturer in China, a shipping facility in Japan, a warehouse in New York, and a local distribution center in North Carolina.
 
