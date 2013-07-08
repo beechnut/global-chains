@@ -32,7 +32,8 @@ class SupplyChain(models.Model):
         transports = self.transport_set.all()
         for transport in transports:
             waypoints.add(transport.origin)
-        waypoints.add(transports[::-1][0].destination) # gets last destination: reverses & gets first item in reversed
+            waypoints.add(transport.destination)
+        # waypoints.add(transports[::-1][0].destination) # gets last destination: reverses & gets first item in reversed
         return list(waypoints)  # makes it more accessible as a list
 
 
@@ -114,9 +115,9 @@ class Transport(models.Model):
             's': 0.0403, # ship / sea freight
             'p': 0.8063, # plane
             'a': 0.1693, # auto
-            't': 0.1048  # train (value for Amtrak)
+            'x': 0.1048  # train (value for Amtrak)
         }
-        
+
         mi_traveled = self.distance() * MI_PER_DEGREE
         kg_carbon = mi_traveled * kg_carbon_per_ton_mile[self.method]
         # tonnes_carbon = kg_carbon / 1000
