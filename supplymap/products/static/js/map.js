@@ -12,18 +12,11 @@ L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png',
   styleId: 22677
 }).addTo(map);
 
+var waypoint_layer, transport_layer, topic, id;
 
-var waypoint_layer, transport_layer;
-
-$('.product').on('click', function(){
-  var id = $(this).data('chain')
-  $('.product').css('background-color', '#09F')
-  $(this).css('background-color', '#3AF')
-  console.log(id);
-
+function updateMap(id){
   $.getJSON('get_supply_chain/' + id, function(data){
     data.supply_chains.forEach(function(supply_chain, ind, arr){
-      console.log(supply_chain);
 
       if (map.hasLayer(waypoint_layer)){
         map.removeLayer(waypoint_layer);
@@ -32,9 +25,6 @@ $('.product').on('click', function(){
       if (map.hasLayer(transport_layer)){
         map.removeLayer(transport_layer);
       }
-      
-      console.log(supply_chain.waypoints);
-      console.log(supply_chain.transports);
 
       waypoint_layer = L.geoJson(supply_chain.waypoints, {
         style: styleMarkers,
@@ -52,10 +42,35 @@ $('.product').on('click', function(){
 
       map.fitBounds(waypoint_layer);
     });
-  });
+  });  
+}
+
+// Exploration Topics
+// Clicking on topic updates map
+
+$('.topic').on('click', function(){
+  topic = $(this).data('topic');
+  $('.topic').css('background-color', '#09F');
+  $(this).css('background-color', '#3AF');
+  updateMap(id);
 });
 
 
+// Clicking on products updates map
+
+$('.product').on('click', function(){
+  id = $(this).data('chain')
+  $('.product').css('background-color', '#09F')
+  $(this).css('background-color', '#3AF')
+  console.log("supply chain: ", id);
+  console.log(topic);
+
+  updateMap(id);
+
+});
+
+$('#sidebar .product')[0].click();
+$('#sidebar .topic')[0].click();
 
 // Style Setup
 
@@ -89,32 +104,33 @@ var facility_names = {
 
 
 // Style Functions
+function getTopicColor(topic, param) {
+  return eval("get" + topic + "Color" )(param);
+}
 
 function getCarbonColor(carbon) {
-  return '#888';
-  // var c = carbon;
-  // return c > 1000 ? 'red' :
-  //        c > 500  ? 'darkred' :
-  //        c > 100  ? 'purple' :
-  //        c > 20   ? 'blue' :
-  //                   'darkblue' ;
+  var c = carbon;
+  return c > 1000 ? 'red' :
+         c > 500  ? 'darkred' :
+         c > 100  ? 'purple' :
+         c > 20   ? 'blue' :
+                    'darkblue' ;
 }
 
 function getWageColor(wage) {
-  return 'blue';
-  // var w = wage;
-  // return w >  200 ? 'darkblue' :
-  //        w >  50  ? 'blue' :
-  //        w >  10  ? 'purple' :
-  //        w >  2   ? 'red' :
-  //        w >= 1   ? 'dark_red' :
-  //                   '#DDD';
+  var w = wage;
+  return w >  200 ? 'darkblue' :
+         w >  50  ? 'blue' :
+         w >  10  ? 'purple' :
+         w >  2   ? 'red' :
+         w >= 1   ? 'dark_red' :
+                    '#D09';
 }
 
 function styleMarkers(feature){
   return {
     radius: 8,
-    fillColor: getWageColor(feature.properties.worker_wage),
+    fillColor: getTopicColor(topic, feature.properties.worker_wage),
     weight: 2,
     opacity: 1,
     color: BORDER_COLOR,
@@ -124,7 +140,7 @@ function styleMarkers(feature){
 
 function styleLines(feature) {
   return {
-    color: getCarbonColor(feature.properties.carbon_output),
+    color: getTopicColor(topic, feature.properties.carbon_output),
     weight: 4,
     opacity: 0.9
   };
@@ -173,22 +189,10 @@ function onEachTransport(feature, layer) {
 
 function highlightFeature(e) {
   var layer = e.target;
-
-  // layer.setStyle({
-  //   weight: 5,
-  //   color: '#666',
-  //   dashArray: '',
-  //   fillOpacity: 0.7
-  // });
-
-  // if(!L.Browser.ie && !L.Browser.opera){
-  //   layer.bringToFront();
-  // }
   info.update(layer.feature.properties); // to update control / data inspector
 }
 
 function resetHighlight(e) {
-  // geojson.resetStyle(e.target);
   info.update();
 }
 
@@ -210,15 +214,3 @@ info.update = function(props) {
 }
 
 info.addTo(map);
-
-
-
-// Exploration Topics
-
-
-$('.topic').on('click', function(){
-  var topic = $(this).data('topic')
-  $('.topic').css('background-color', '#09F')
-  $(this).css('background-color', '#3AF')
-  console.log(topic);
-});
