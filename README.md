@@ -32,28 +32,6 @@ If tranportation types are added, the app will calculate a rough carbon output b
 
 
 
-Administrator Story
--------------------
-The admin logs in using a username and password.
-
-They see a page that has an 'Add Product button.' They click it.
-
-They add info to `product name` and `product description` and optional fields `product cost` and `carbon output`.
-
-They then fill in information about the first waypoint: the origin of the product. (At the moment, the app can only handle linear supply chains: it does not permit mutliple converging paths, which is admittedly a more accurate model, which are planned for a future version.)
-
-For the product origin, they add a `company name`, `facility address`, `worker wage`, and `waypoint type`, which is one of Raw Material Supplier, Manufacturer, Storage Facility, Distributor, Retailer, Consumer.
-
-They click "add a second waypoint" which asychronously adds some fields for a transportation object, which is entirely optional. The admin selects a transportation mode (one of Ship, Plane, Train, Automobile).
-
-The admin can add a `carbon output` amount if they know it; if not, it will be estimated based on the transport mode and distance between the two waypoints.
-
-The admin can also add information to optional fields: `transport company`, `trip duration`, `worker wage`.
-
-The last step in the chain should be the consumer location, which might be the address of a restaurant, city, or residential street.
-
-
-
 Getting Started in Development
 ------------------------------
 
@@ -124,3 +102,4 @@ Transport types:
   + Plane
   + Train
   + Automobile
+
