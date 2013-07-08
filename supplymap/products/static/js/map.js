@@ -123,8 +123,8 @@ function getWageColor(wage) {
          w >  50  ? 'blue' :
          w >  10  ? 'purple' :
          w >  2   ? 'red' :
-         w >= 1   ? 'dark_red' :
-                    '#D09';
+         w >= 1   ? 'darkred' :
+                    'darkred';
 }
 
 function styleMarkers(feature){
@@ -162,7 +162,7 @@ function onEachWaypoint(feature, layer) {
   // does this feature have a property named popupContent?
   if (feature.properties && feature.properties.waypoint_type) {
     var facility_code = feature.properties.waypoint_type
-    layer.bindPopup(facility_names[facility_code]);
+    layer.bindPopup("<b>" + facility_names[facility_code] + "</b><br/>" + feature.properties.company_name);
   }
   layer.on({
     mouseover: highlightFeature,
@@ -175,7 +175,7 @@ function onEachWaypoint(feature, layer) {
 function onEachTransport(feature, layer) {
   // does this feature have a property named popupContent?
   if (feature.properties && feature.properties.carbon_output) {
-    var carbon_info = "Emits " + feature.properties.carbon_output + " tons CO2"
+    var carbon_info = "Emits " + feature.properties.carbon_output + " tons CO2 during transportation"
     layer.bindPopup(carbon_info);
   }
   layer.on({
@@ -207,7 +207,7 @@ info.onAdd = function(map){
   return this._div;
 };
 
-var HEADER_HTML = '<h4>Data Inspector</h4>'
+var HEADER_HTML = '<h4>Data Inspector</h4><hr/>'
 var DEFAULT_HTML = 'Hover over a waypoint or transportation route.'
 
 info.update = function(props) {
@@ -215,6 +215,7 @@ info.update = function(props) {
   if(props){
     inspector_html = (props.waypoint_type ? '<b>' + facility_names[props.waypoint_type] + '</b><br/>' : 'Transportation<br/>');
     inspector_html += (props.company_name && props.company_name != 'Consumer' ? props.company_name + '<br/>' : 'No company data.<br/>');
+    inspector_html += "<br/>"
     inspector_html += (props.carbon_output ? 'Emits ' + props.carbon_output + ' tons CO2<br/>' : 'No carbon data.<br/>');
     inspector_html += (props.worker_wage ? 'Worker makes $' + props.worker_wage + ' / day' : 'No wage data.');
   }
