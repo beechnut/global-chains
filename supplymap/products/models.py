@@ -1,5 +1,6 @@
 from django.db import models
 from djangotoolbox.fields import ListField, EmbeddedModelField
+import urllib, urllib2, json
 
 class Product(models.Model):
     name          = models.CharField(max_length=100)
@@ -42,12 +43,26 @@ class Waypoint(models.Model):
     worker_wage      = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 
     def __unicode__(self):
-        return self.company_name + " " + self.location
+        return self.company_name # + " " + str(self.location)
 
     def save(self, *args, **kwargs):
-        # geocode()
+        if not self.location:
+            self.location = self.geocode
         super(Waypoint, self).save(*args, **kwargs) # Call the "real" save() method.
-  
+
+    def geocode(self):
+        address = self.facility_address
+        safe_address = urllib.quote_plus(address)
+        url = "http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false" % safe_address
+
+        response = urllib2.urlopen(url)
+        jsongeocode = response.read()
+        geodata = json.loads(jsongeocode)
+
+        lng = geodata['results'][0]['geometry']['location']['lng']
+        lat = geodata['results'][0]['geometry']['location']['lat']
+        location = "%s,%s" % (lng, lat)
+        return location  
 
 TRANSPORT_METHODS = (('s', 'ship'), ('p', 'plane'), ('x', 'train'), ('a', 'automobile'))
 
