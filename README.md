@@ -112,15 +112,15 @@ Developer Information
 The app uses Django for a backend, and Leaflet with Cloudmade for map display.
 
 Waypoint types:
-  Raw Material Supplier
-  Manufacturer
-  Storage Facility
-  Distributor
-  Retailer
-  Consumer
+  + Raw Material Supplier
+  + Manufacturer
+  + Storage Facility
+  + Distributor
+  + Retailer
+  + Consumer
 
 Transport types:
-  Ship
-  Plane
-  Train
-  Automobile
+  + Ship
+  + Plane
+  + Train
+  + Automobile
