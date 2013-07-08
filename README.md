@@ -1,30 +1,30 @@
 Global Chains
 ==========
 
-__Global Chains__ shows you the geography of the supply chain of everyday products you use. Explore socioeconomic inequalities across the supply chain, and visualize the carbon emissions of each step in the production process.
+__Global Chains__ enables you to explore the supply chains of everyday products you use. You can visualize and inspect information regarding the carbon footprint of various products, and the wage/standard-of-living inequalities at different stages of the product's life.
 
 ### End Users
 
-Users can click on a product from a list, and the global supply chain will be displayed on the world map.
+Users click on a product in a set to see that product's global traverse, from raw material to finished product.
 
 With the supply chain displayed, users can click on the various waypoints to explore information about that waypoint. They could inspect a manufacturer in China, a shipping facility in Japan, a warehouse in New York, and a local distribution center in North Carolina.
 
 ### Administrators
 
-Administrators can add products and supply chains and order them into sets.
+Administrators can add products and supply chains. The plan is to allow users to create sets of products that can be shared.
 
 #### Best Practices
 
 This app will be best used if it demonstrates:
 
-+ differences in supply chains between local and international products of similar nature
++ differences in supply chains between similar products, but where one is manufactured locall and the other overseas
 + global interdependencies
 + global inequities
-+ energetics / carbon output of global trade
++ ecological impact / carbon output of global trade
 
 For example, worker wage information and worker demographics should be added to waypoints when possible.
 
-This app might also best be used in highlighting the variety of countries through which a product passes before it ends up, in, say, one particular cafe in Boston.
+The user might create product sets to highlight the variety of countries through which a product passes before it ends up, in, say, one particular cafe in Boston.
 
 Or, it might be used to display supply chains that originate in particular country (say, Belize), and where they end up across the world.
 
@@ -52,8 +52,11 @@ The admin can also add information to optional fields: `transport company`, `tri
 
 The last step in the chain should be the consumer location, which might be the address of a restaurant, city, or residential street.
 
+
+
 Getting Started in Development
 ------------------------------
+
 ### OS X
 
 Clone the repository.
@@ -73,8 +76,10 @@ Install the dependencies.
 
 Sync and migrate the database.
 
-`python manage.py syncdb`
-`python manage.py migrate`
+```bash
+python manage.py syncdb
+python manage.py migrate
+```
 
 Load the seed data into the database.
 
@@ -100,55 +105,11 @@ Save and exit.
 
 Now you can run commands like `mpy runserver`.
 
-Developer Flow
---------------
-
-1. serialize GeoJSON for json views
-
-2. write geocode method for Waypoint#before_save
-  + http://stackoverflow.com/questions/2755027/geocoding-an-address-on-form-submission
-
-3. clean up data inspector: better output
 
 Developer Information
 ---------------------
 
 The app uses Django for a backend, and Leaflet with Cloudmade for map display.
-
-When the admin adds a supply chain, it geocodes all the given addresses.
-
-status: OK, (or error)
-waypoints:
-[
-  {
-    location (format as geojson),
-      properties:
-        company name
-        worker wage
-        facility address
-        waypoint type
-  },
-  ...
-]
-legs:
-[
-  {
-    travel_mode: ship,
-    transport_company: Django Exports Ltd.
-    trip_duration: 12, (hours)
-    carbon_output: 144, (tons CO2)
-    worker_wage: 0.5, (USD/hr)
-    start_location: {
-      lng: lng,
-      lat: lat
-    },
-    end_location: {
-      lng: lng,
-      lat: lat
-    }
-  },
-  ...
-]
 
 Waypoint types:
   Raw Material Supplier
@@ -163,20 +124,3 @@ Transport types:
   Plane
   Train
   Automobile
-
-
-
-Fit Bounds and Different Icons
-==============================
-
-map.fitBounds([
-    [40.712, -74.227],
-    [40.774, -74.125]
-]);
-
-var greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'}),
-    redIcon = new LeafIcon({iconUrl: 'leaf-red.png'}),
-    orangeIcon = new LeafIcon({iconUrl: 'leaf-orange.png'});
-
-latlngs = [origin, destination]
-var polyline = L.polyline(latlngs, {color: getCarbonColor(transport.carbon_output)}).addTo(map);

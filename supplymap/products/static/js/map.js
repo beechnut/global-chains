@@ -14,7 +14,7 @@ L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png',
 
 var waypoint_layer, transport_layer, topic, id;
 
-function updateMap(id){
+function updateMap(id, should_fit){
   $.getJSON('get_supply_chain/' + id, function(data){
     data.supply_chains.forEach(function(supply_chain, ind, arr){
 
@@ -39,8 +39,9 @@ function updateMap(id){
 
       map.addLayer(waypoint_layer);
       map.addLayer(transport_layer);
-
-      map.fitBounds(waypoint_layer);
+      if(should_fit){
+        map.fitBounds(waypoint_layer);
+      }
     });
   });  
 }
@@ -52,7 +53,7 @@ $('.topic').on('click', function(){
   topic = $(this).data('topic');
   $('.topic').css('background-color', '#09F');
   $(this).css('background-color', '#3AF');
-  updateMap(id);
+  updateMap(id, false);
 });
 
 
@@ -65,8 +66,7 @@ $('.product').on('click', function(){
   console.log("supply chain: ", id);
   console.log(topic);
 
-  updateMap(id);
-
+  updateMap(id, true);
 });
 
 $('#sidebar .product')[0].click();
