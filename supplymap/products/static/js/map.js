@@ -102,10 +102,16 @@ var facility_names = {
   'cons': 'Consumer'
 }
 
+var property_names = {
+  'Wage': 'worker_wage',
+  'Carbon': 'carbon_output'
+}
+
 
 // Style Functions
-function getTopicColor(topic, param) {
-  return eval("get" + topic + "Color" )(param);
+function getTopicColor(topic, feature) {
+  property = eval("feature.properties." + property_names[topic])
+  return eval("get" + topic + "Color" )(property);
 }
 
 function getCarbonColor(carbon) {
@@ -130,7 +136,7 @@ function getWageColor(wage) {
 function styleMarkers(feature){
   return {
     radius: 8,
-    fillColor: getTopicColor(topic, feature.properties.worker_wage),
+    fillColor: getTopicColor(topic, feature),
     weight: 2,
     opacity: 1,
     color: BORDER_COLOR,
@@ -140,7 +146,7 @@ function styleMarkers(feature){
 
 function styleLines(feature) {
   return {
-    color: getTopicColor(topic, feature.properties.carbon_output),
+    color: getTopicColor(topic, feature),
     weight: 4,
     opacity: 0.9
   };
@@ -153,7 +159,7 @@ function styleLines(feature) {
 function pointToWaypointLayer(feature, latlng) {
   var marker = L.AwesomeMarkers.icon({
     icon: facility_icons[feature.properties.waypoint_type],
-    color: getWageColor(feature.properties.worker_wage)
+    color: getTopicColor(topic, feature)
   });
   return L.marker(latlng, {icon: marker});
 }
