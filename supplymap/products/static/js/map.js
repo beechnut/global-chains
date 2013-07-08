@@ -180,7 +180,7 @@ function onEachWaypoint(feature, layer) {
 function onEachTransport(feature, layer) {
   // does this feature have a property named popupContent?
   if (feature.properties && feature.properties.carbon_output) {
-    var carbon_info = "Emits " + feature.properties.carbon_output + " tons CO2 during transportation"
+    var carbon_info = "Emits " + feature.properties.carbon_output + " kg CO2 during transportation"
     layer.bindPopup(carbon_info);
   }
   layer.on({
@@ -221,7 +221,7 @@ info.update = function(props) {
     inspector_html = (props.waypoint_type ? '<b>' + facility_names[props.waypoint_type] + '</b><br/>' : 'Transportation<br/>');
     inspector_html += (props.company_name && props.company_name != 'Consumer' ? props.company_name + '<br/>' : 'No company data.<br/>');
     inspector_html += "<br/>"
-    inspector_html += (props.carbon_output ? 'Emits ' + props.carbon_output + ' tons CO2<br/>' : 'No carbon data.<br/>');
+    inspector_html += (props.carbon_output ? 'Emits ' + props.carbon_output + ' kg CO2<br/>' : 'No carbon data.<br/>');
     inspector_html += (props.worker_wage ? 'Worker makes $' + props.worker_wage + ' / day' : 'No wage data.');
   }
   this._div.innerHTML = HEADER_HTML + inspector_html;
