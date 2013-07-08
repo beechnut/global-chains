@@ -208,9 +208,17 @@ info.onAdd = function(map){
 };
 
 var HEADER_HTML = '<h4>Data Inspector</h4>'
+var DEFAULT_HTML = 'Hover over a waypoint or transportation route.'
 
 info.update = function(props) {
-  this._div.innerHTML = HEADER_HTML + (props ? '<b>Emits ' + props.carbon_output + ' tons CO2</b><br /> $' + props.worker_wage + ' / day' : 'Hover over a waypoint<br/>or transport route.');
+  inspector_html = DEFAULT_HTML;
+  if(props){
+    inspector_html = (props.waypoint_type ? '<b>' + facility_names[props.waypoint_type] + '</b><br/>' : 'Transportation<br/>');
+    inspector_html += (props.company_name && props.company_name != 'Consumer' ? props.company_name + '<br/>' : 'No company data.<br/>');
+    inspector_html += (props.carbon_output ? 'Emits ' + props.carbon_output + ' tons CO2<br/>' : 'No carbon data.<br/>');
+    inspector_html += (props.worker_wage ? 'Worker makes $' + props.worker_wage + ' / day' : 'No wage data.');
+  }
+  this._div.innerHTML = HEADER_HTML + inspector_html;
 }
 
 info.addTo(map);
