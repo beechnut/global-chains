@@ -49,6 +49,8 @@ $('.product').on('click', function(){
 
       map.addLayer(waypoint_layer);
       map.addLayer(transport_layer);
+
+      map.fitBounds(waypoint_layer);
     });
   });
 });
@@ -208,3 +210,15 @@ info.update = function(props) {
 }
 
 info.addTo(map);
+
+
+
+// Exploration Topics
+
+
+$('.topic').on('click', function(){
+  var topic = $(this).data('topic')
+  $('.topic').css('background-color', '#09F')
+  $(this).css('background-color', '#3AF')
+  console.log(topic);
+});

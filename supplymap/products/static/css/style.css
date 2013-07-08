@@ -28,8 +28,8 @@ body {
 }
 
 #sidebar .header{
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
   font-size: 20px;
   text-align: center;
   width: 100%;
@@ -41,6 +41,21 @@ body {
   width: 100%;
   border-bottom: 1px #9AF solid;
 }
+
+#sidebar .topic{
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 40%;
+  float: left;
+  border-bottom: 1px #9AF solid;
+}
+
+#sidebar .right {
+  float: right;
+}
+
 
 .info {
   padding: 6px 8px;
