@@ -116,21 +116,20 @@ function getTopicColor(topic, feature) {
 
 function getCarbonColor(carbon) {
   var c = carbon;
-  return c > 1000 ? 'red' :
-         c > 500  ? 'darkred' :
-         c > 100  ? 'purple' :
-         c > 20   ? 'blue' :
-                    'darkblue' ;
+  return c > 1000 ? 'darkred' :
+         c > 500  ? 'red' :
+         c > 20   ? 'orange' :
+         c > 0    ? 'green' :
+                    'darkgreen' ;
 }
 
 function getWageColor(wage) {
   var w = wage;
-  return w >  200 ? 'darkblue' :
-         w >  50  ? 'blue' :
-         w >  10  ? 'purple' :
-         w >  2   ? 'red' :
-         w >= 1   ? 'darkred' :
-                    'darkred';
+  return w >  50  ? 'green' :
+         w >  20  ? 'darkgreen' :
+         w >  5   ? 'orange' :
+         w >  2   ? 'darkred' :
+                    'red';
 }
 
 function styleMarkers(feature){
