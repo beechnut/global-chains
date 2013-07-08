@@ -86,7 +86,7 @@ class Transport(models.Model):
     origin        = models.ForeignKey(Waypoint, related_name='origin_waypoint')
     destination   = models.ForeignKey(Waypoint, related_name='destination_waypoint')
     method        = models.CharField(max_length=30, choices=TRANSPORT_METHODS)
-    company       = models.CharField(max_length=100, null=True, blank=True)
+    company_name  = models.CharField(max_length=100, null=True, blank=True)
     duration      = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     worker_wage   = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     carbon_output = models.DecimalField(max_digits=9, decimal_places=2, null=True, blank=True)

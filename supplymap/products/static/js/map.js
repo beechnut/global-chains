@@ -116,11 +116,11 @@ function getTopicColor(topic, feature) {
 
 function getCarbonColor(carbon) {
   var c = carbon;
-  return c > 1000 ? 'darkred' :
-         c > 500  ? 'red' :
-         c > 20   ? 'orange' :
-         c > 0    ? 'green' :
-                    'darkgreen' ;
+  return c > 1000 ? 'red' :
+         c > 500  ? 'darkred' :
+         c > 30   ? 'orange' :
+         c > 0    ? 'darkgreen' :
+                    'green' ;
 }
 
 function getWageColor(wage) {
@@ -180,7 +180,7 @@ function onEachWaypoint(feature, layer) {
 function onEachTransport(feature, layer) {
   // does this feature have a property named popupContent?
   if (feature.properties && feature.properties.carbon_output) {
-    var carbon_info = "Emits " + feature.properties.carbon_output + " kg CO2 during transportation"
+    var carbon_info = "Emits " + feature.properties.carbon_output + " kg CO2<br/>during transportation"
     layer.bindPopup(carbon_info);
   }
   layer.on({
