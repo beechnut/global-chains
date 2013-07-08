@@ -47,7 +47,7 @@ class Waypoint(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.location:
-            self.location = self.geocode
+            self.location = self.geocode()
         super(Waypoint, self).save(*args, **kwargs) # Call the "real" save() method.
 
     def geocode(self):
