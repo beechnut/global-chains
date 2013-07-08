@@ -61,7 +61,7 @@ class Waypoint(models.Model):
 
         lng = geodata['results'][0]['geometry']['location']['lng']
         lat = geodata['results'][0]['geometry']['location']['lat']
-        location = "%s,%s" % (lng, lat)
+        location = "%s,%s" % (lat, lng)
         return location  
 
 TRANSPORT_METHODS = (('s', 'ship'), ('p', 'plane'), ('x', 'train'), ('a', 'automobile'))
