@@ -70,6 +70,8 @@ $('.product').on('click', function(){
   updateMap(id, true);
 });
 
+makeLegend("Carbon");
+makeLegend("Wage");
 $('#sidebar .product')[0].click();
 $('#sidebar .topic')[0].click();
 
@@ -111,7 +113,16 @@ var property_names = {
 
 // Style Functions
 function getTopicColor(topic, feature) {
-  property = eval("feature.properties." + property_names[topic])
+  var property;
+  if (typeof(feature) == "object")
+  {
+    property = eval("feature.properties." + property_names[topic]);
+  }
+  else if (typeof(feature) == "number")
+  {
+    console.log('feature:' + feature);
+    property = feature;
+  }
   return eval("get" + topic + "Color" )(property);
 }
 
@@ -237,66 +248,52 @@ info.addTo(map);
 // var carbon_legend = L.control({position: 'bottomleft'});
 // var wage_legend = L.control({position: 'bottomright'});
 
-function updateLegend(topic){
-
+function makeLegend(topic){
+  // on init: legends for all toipcs (this metaprogramming is good)
+  // on update: hide all, show just the one for the selected topic.
+  //   means that after you create the div with domutil, add an id to it with jquery
+  //   so that later it can be domqueried
   var name = "legend" + topic;
   console.log(name);
   eval("var " + name + "= L.control({position: 'bottomright'});");
 
   var gradesCarbon = [1000, 500, 30, 10, 1],
-      gradesWage   = [50, 20, 5, 2, 1]
+      gradesWage   = [50, 20, 5, 2, 1];
 
   var headerCarbon = "<h4>CO2 emitted (kilograms)</h4>",
-      headerWage   = "<h4>USD $ earned per day</h4>'"
+      headerWage   = "<h4>USD $ earned per day</h4>";
 
+  var topic_grades = eval("grades" + topic),
+      topic_header = eval("header" + topic);
 
-  topic_grades = eval("grades" + topic)
+  eval(name).onAdd = function(map){
+    var div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML = topic_header;
+    $(div).attr('id', topic);
 
-  legendCarbon.onAdd = function(map){
-    var div = L.DomUtil.create('div', 'info legend'),
-        carbon_grades = [1000, 500, 30, 10, 1],
-        labels = [];
+    // loop through grades here.
+    for(var i=0; i<topic_grades.length; i++){
+      console.log(topic_grades[i]);
+      console.log(getTopicColor(topic, topic_grades[i]));
+      div.innerHTML += '<i style="background: '+ getTopicColor(topic, topic_grades[i])+'"></i>';
+      div.innerHTML += topic_grades[i];
 
-    div.innerHTML += '<h4>CO2 emitted (kilograms)</h4>'
-
-    for(var i=0; i<carbon_grades.length; i++){
-      div.innerHTML += '<i style="background:' + getCarbonColor(carbon_grades[i] + 1) + '"></i>';
-      if (carbon_grades[i+1]){
-        div.innerHTML += carbon_grades[i] + '<br/>'
+      if(topic_grades[i+1]){
+        div.innerHTML += '<br/>';
       }
-      else
-      {
-        div.innerHTML += carbon_grades[i] + '+'
+      else{
+        div.innerHTML += '+';
       }
-
+      
     }
 
     return div;
   }
-
   console.log(eval(name + ".addTo(map);"));
+}
 
-  legendWage.onAdd = function(map){
-    var div = L.DomUtil.create('div', 'info legend'),
-        wage_grades = [50, 20, 5, 2, 1],
-        labels = [];
-
-    div.innerHTML += '<h4>USD $ earned per day</h4>'
-
-    for(var i=0; i<wage_grades.length; i++){
-      div.innerHTML += '<i style="background:' + getWageColor(wage_grades[i] + 1) + '"></i>';
-      if (wage_grades[i+1]){
-        div.innerHTML += wage_grades[i] + '<br/>'
-      }
-      else
-      {
-        div.innerHTML += wage_grades[i] + '+'
-      }
-
-    }
-
-    return div;
-  }
-
-
+function updateLegend(topic){
+  console.log('update legend with topic: ' + topic);
+  $('.info.legend').hide();
+  $('.info.legend#' + topic).show();
 }
