@@ -137,8 +137,8 @@ function getCarbonColor(carbon) {
 
 function getWageColor(wage) {
   var w = wage;
-  return w >  50  ? 'green' :
-         w >  20  ? 'darkgreen' :
+  return w >  50  ? 'darkgreen' :
+         w >  20  ? 'green' :
          w >  5   ? 'orange' :
          w >  2   ? 'darkred' :
                     'red';
@@ -275,7 +275,7 @@ function makeLegend(topic){
     for(var i=0; i<topic_grades.length; i++){
       console.log(topic_grades[i]);
       console.log(getTopicColor(topic, topic_grades[i]));
-      div.innerHTML += '<i style="background: '+ getTopicColor(topic, topic_grades[i])+'"></i>';
+      div.innerHTML += '<i style="background: '+ getTopicColor(topic, topic_grades[i]+1)+'"></i>';
       div.innerHTML += topic_grades[i];
 
       if(topic_grades[i+1]){
