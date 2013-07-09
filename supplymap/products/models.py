@@ -60,6 +60,7 @@ class Waypoint(models.Model):
     facility_address = models.CharField(max_length=200)
     company_name     = models.CharField(max_length=200, null=True, blank=True)
     worker_wage      = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    crosses_dateline = models.BooleanField()
 
     def __unicode__(self):
         return self.company_name # + " " + str(self.location)
@@ -78,8 +79,10 @@ class Waypoint(models.Model):
         jsongeocode = response.read()
         geodata = json.loads(jsongeocode)
 
-        lng = geodata['results'][0]['geometry']['location']['lng']
         lat = geodata['results'][0]['geometry']['location']['lat']
+        lng = geodata['results'][0]['geometry']['location']['lng']
+        if self.crosses_dateline:
+            lng += 360
         location = "%s,%s" % (lat, lng)
         return location  
 
