@@ -17,10 +17,14 @@
       <div class="topic" data-topic="Carbon">Carbon</div>
       <div class="topic right" data-topic="Wage">Wages</div>
       <br/><br/>
-      <div class="header">Products:</div>
-      {% for id, name in products.items %}
-        <div class="product" data-chain="{{ id  }}">{{name}}</div>
+
+      {% for name, products in product_sets.items %}
+        <div class="header">Products for<br/>{{ name }}</div>
+        {% for id, name in products.items %}
+          <div class="product" data-chain="{{ id }}">{{name}}</div>
+        {% endfor %}
       {% endfor %}
+
     </div>
     <div id="map"></div>
   </body>

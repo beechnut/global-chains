@@ -6,8 +6,6 @@ from math import pow, sqrt
 
 
 
-
-
 class ProductSet(models.Model):
     name        = models.CharField(max_length=100)
     description = models.TextField()
