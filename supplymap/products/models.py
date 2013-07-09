@@ -7,17 +7,26 @@ from math import pow, sqrt
 
 
 
+
+class ProductSet(models.Model):
+    name        = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return self.name
+
+
+
 class Product(models.Model):
     name          = models.CharField(max_length=100)
     company       = models.CharField(max_length=100, null=True, blank=True)
     description   = models.CharField(max_length=400)
     cost          = models.DecimalField(max_digits=9, decimal_places=2, null=True, blank=True)
     carbon_output = models.DecimalField(max_digits=9, decimal_places=2, null=True, blank=True)
+    product_set   = models.ForeignKey(ProductSet, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
-
-
 
 
 
