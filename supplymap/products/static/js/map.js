@@ -54,6 +54,7 @@ $('.topic').on('click', function(){
   $('.topic').css('background-color', '#09F');
   $(this).css('background-color', '#3AF');
   updateMap(id, false);
+  updateLegend(topic);
 });
 
 
@@ -119,7 +120,7 @@ function getCarbonColor(carbon) {
   return c > 1000 ? 'red' :
          c > 500  ? 'darkred' :
          c > 30   ? 'orange' :
-         c > 0    ? 'darkgreen' :
+         c > 2    ? 'darkgreen' :
                     'green' ;
 }
 
@@ -228,3 +229,74 @@ info.update = function(props) {
 }
 
 info.addTo(map);
+
+
+// Legend
+
+
+// var carbon_legend = L.control({position: 'bottomleft'});
+// var wage_legend = L.control({position: 'bottomright'});
+
+function updateLegend(topic){
+
+  var name = "legend" + topic;
+  console.log(name);
+  eval("var " + name + "= L.control({position: 'bottomright'});");
+
+  var gradesCarbon = [1000, 500, 30, 10, 1],
+      gradesWage   = [50, 20, 5, 2, 1]
+
+  var headerCarbon = "<h4>CO2 emitted (kilograms)</h4>",
+      headerWage   = "<h4>USD $ earned per day</h4>'"
+
+
+  topic_grades = eval("grades" + topic)
+
+  legendCarbon.onAdd = function(map){
+    var div = L.DomUtil.create('div', 'info legend'),
+        carbon_grades = [1000, 500, 30, 10, 1],
+        labels = [];
+
+    div.innerHTML += '<h4>CO2 emitted (kilograms)</h4>'
+
+    for(var i=0; i<carbon_grades.length; i++){
+      div.innerHTML += '<i style="background:' + getCarbonColor(carbon_grades[i] + 1) + '"></i>';
+      if (carbon_grades[i+1]){
+        div.innerHTML += carbon_grades[i] + '<br/>'
+      }
+      else
+      {
+        div.innerHTML += carbon_grades[i] + '+'
+      }
+
+    }
+
+    return div;
+  }
+
+  console.log(eval(name + ".addTo(map);"));
+
+  legendWage.onAdd = function(map){
+    var div = L.DomUtil.create('div', 'info legend'),
+        wage_grades = [50, 20, 5, 2, 1],
+        labels = [];
+
+    div.innerHTML += '<h4>USD $ earned per day</h4>'
+
+    for(var i=0; i<wage_grades.length; i++){
+      div.innerHTML += '<i style="background:' + getWageColor(wage_grades[i] + 1) + '"></i>';
+      if (wage_grades[i+1]){
+        div.innerHTML += wage_grades[i] + '<br/>'
+      }
+      else
+      {
+        div.innerHTML += wage_grades[i] + '+'
+      }
+
+    }
+
+    return div;
+  }
+
+
+}
